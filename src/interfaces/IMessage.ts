@@ -1,4 +1,4 @@
-export default interface IMessage{
+export default interface IMessage {
     chat_id: string;
     message_id: string;
     sender_id: string;

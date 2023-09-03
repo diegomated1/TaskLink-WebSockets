@@ -1,6 +1,6 @@
 import cassandra, { Client } from "cassandra-driver";
 
-export default class ChatDatabase{
+export class Database{
 
     client: Client
 
@@ -9,18 +9,21 @@ export default class ChatDatabase{
         let password = process.env.CASSANDRA_PASSWORD!;
         let contactPoint = process.env.CASSANDRA_CONTACTPOINT!;
         let localDataCenter = process.env.CASSANDRA_DATACENTER!;
-
+        
         const authProvider = new cassandra.auth.PlainTextAuthProvider(user, password);
         this.client = new Client({
             contactPoints: [contactPoint],
             localDataCenter,
-            keyspace: "TaskLink",
-            authProvider
+            keyspace: "tasklink",
+            authProvider,
+            sslOptions: {
+                rejectUnauthorized: false
+            }
         });
     }
 
-    connect(){
-        this.client.connect().then(()=>{
+    async connect(){
+        return this.client.connect().then(()=>{
             console.log("Cassandra connected");
         }).catch((err:Error)=>{
             console.log("Cannot connect to cassandra: ", err.name);

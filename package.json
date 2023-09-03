@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cassandra-driver": "^4.6.4",
+    "socket.io": "^4.7.2"
+  }
+}

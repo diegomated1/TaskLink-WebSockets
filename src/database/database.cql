@@ -13,3 +13,11 @@ CREATE TABLE messages_by_chat(
     image_paths LIST<TEXT>,
     PRIMARY KEY (chat_id, create_timestamp)
 );
+
+CREATE TABLE routes_by_offert_id(
+    offer_id INT,
+    encoded_polyline TEXT,
+    distance_meters FLOAT,
+    duration TEXT,
+    PRIMARY KEY (offert_id)
+);

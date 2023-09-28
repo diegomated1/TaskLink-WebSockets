@@ -1,6 +1,5 @@
 import { Client } from "cassandra-driver";
 import { Database } from "../database/database";
-import IMessage from "../interfaces/IMessage";
 import { IRoute } from "interfaces/IRoute";
 
 export class RouteModel {
@@ -17,9 +16,10 @@ export class RouteModel {
         return new Promise(async (res, rej) => {
             try {
                 const query = 'SELECT * FROM routes_by_offert_id WHERE offert_id = ?';
-                const values = [id];
+                const values = [id.toString()];
+
                 const result = await this.client.execute(query, values);
-                const route = result.rows as unknown as IRoute;
+                const route = result.rows[0] as unknown as IRoute;
                 res(route);
             } catch (error) {
                 rej(error);
@@ -35,7 +35,7 @@ export class RouteModel {
                 const values = Object.values(entity);
 
                 const query = `INSERT INTO routes_by_offert_id (${columns}) VALUES (${placeholders})`;
-                await this.client.execute(query, values);
+                await this.client.execute(query, values, { prepare: true });
                 res();
             } catch (error) {
                 rej(error);

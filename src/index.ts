@@ -1,15 +1,19 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { Database } from "./database/database";
 import { Server } from "socket.io";
 import ChatListeners from "./listeners/UserChatListener";
 import { MessageModel } from "./models/MessageModel";
-import dotenv from "dotenv";
-dotenv.config();
+import RouteListener from "./listeners/RouteListener";
+import { RouteModel } from "./models/RouterModel";
 
 async function main(){
     const database = new Database();
     await database.connect();
 
     const messageModel = new MessageModel(database);
+    const routeModel = new RouteModel(database);
 
     const port = parseInt(process.env.PORT || "3000");
 
@@ -17,10 +21,13 @@ async function main(){
 
     const chatNamespace = io.of("/chat");
     chatNamespace.on('connection', (socket)=>{
-        console.log("conectado");
-        const {id_chat} = socket.handshake.query;
-        
         new ChatListeners(messageModel, io, socket);
+    });
+
+    const routeNamespace = io.of("/route");
+    routeNamespace.on('connection', (socket) => {
+        console.log("conectado");
+        new RouteListener(routeModel, io, socket);
     });
 }
 

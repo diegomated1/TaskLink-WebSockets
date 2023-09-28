@@ -10,7 +10,7 @@ export class Google {
     static getRoute = (
         origin: LatLng,
         destination: LatLng,
-        travelModel: "DRIVE"
+        travelModel?: "DRIVE"
     ): Promise<RouteModel | null> => {
         return new Promise(async (res, rej) => {
             try {
@@ -42,11 +42,11 @@ export class Google {
                     "languageCode": "es-419"
                 };
 
-                var { data } = await axios.post<RouteModel>(`${GOOGLE_API_ROUTE_URL}/directions/v2:computeRoutes`, body, {headers});
+                var { data } = await axios.post<{routes: RouteModel[]}>(`${GOOGLE_API_ROUTE_URL}/directions/v2:computeRoutes`, body, {headers});
 
-                res(data);
+                res(data.routes[0]);
             } catch (err) {
-                res(null);
+                rej(err);
             }
         });
     }

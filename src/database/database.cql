@@ -15,9 +15,17 @@ CREATE TABLE messages_by_chat(
 );
 
 CREATE TABLE routes_by_offert_id(
-    offer_id INT,
+    offert_id INT,
     encoded_polyline TEXT,
     distance_meters FLOAT,
     duration TEXT,
     PRIMARY KEY (offert_id)
+);
+
+CREATE TABLE location_by_region(
+    city TEXT,
+    subcountry TEXT,
+    latitude FLOAT,
+    longitude FLOAT,
+    PRIMARY KEY (subcountry, city, latitude, longitude)
 );

@@ -26,9 +26,19 @@ async function main(){
 
     const routeNamespace = io.of("/route");
     routeNamespace.on('connection', (socket) => {
-        console.log("conectado");
         new RouteListener(routeModel, io, socket);
     });
+
+    const locationNamespace = io.of("/location");
+    locationNamespace.on('connection', (socket) => {
+        const { region } = socket.handshake.query;
+        if(!region || typeof region != "string"){
+            socket.emit("error", "no hay una localizacion");
+            return;
+        }
+
+        socket.broadcast.to(`location::${region}`).emit("location:add")
+    })
 }
 
 main();

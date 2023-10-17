@@ -1,6 +1,5 @@
 export interface ILocation {
-    city: string
-    subcountry: string
+    user_id: string
     latitude: number
     longitude: number
 }

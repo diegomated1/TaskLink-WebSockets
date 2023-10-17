@@ -4,7 +4,7 @@ export default interface IMessage {
     sender_id: string;
     receiver_id: string;
     content: string;
-    create_timestamp: number;
+    create_timestamp: Date;
     is_read: boolean;
     has_image: boolean;
     image_paths: string[];

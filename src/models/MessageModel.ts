@@ -34,7 +34,7 @@ export class MessageModel {
                 const values = Object.values(entity);
 
                 const query = `INSERT INTO messages_by_chat (${columns}) VALUES (${placeholders})`;
-                await this.client.execute(query, values);
+                await this.client.execute(query, values, {prepare: true});
                 res();
             } catch (error) {
                 rej(error);
